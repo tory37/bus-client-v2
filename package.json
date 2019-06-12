@@ -20,7 +20,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build && copyfiles _redirects build",
+        "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
@@ -41,7 +41,6 @@
     },
     "devDependencies": {
         "copy-webpack-plugin": "^5.0.3",
-        "copyfiles": "^2.1.0",
         "eslint": "^5.16.0",
         "eslint-config-airbnb": "^17.1.0",
         "eslint-plugin-import": "^2.17.3",
