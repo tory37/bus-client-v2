@@ -9,71 +9,73 @@ import { loginUser } from '../actions/authActions';
 import BUSButton from './BUSButton';
 import StyledShadowedBox from '../styles/StyledShadowedBox';
 
-const StyledSignup = styled.div`
-  width: 450px;
-  height: auto;
-  padding: 48px 40px 36px;
-  background-color: white;
+const StyledLogin = styled.div`
+    width: 450px;
+    height: auto;
+    padding: 48px 40px 36px;
+    background-color: white;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  .title-row {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
-    .title {
-      font-family: 'Google Sans', 'Noto Sans Myanmar UI', arial, sans-serif;
-      font-size: 24px;
-      font-weight: 400;
-      line-height: 1.3333;
-      align-self: center;
+    .title-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            font-family: 'Google Sans', 'Noto Sans Myanmar UI', arial, sans-serif;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1.3333;
+            align-self: center;
+        }
+
+        a {
+            font-size: 10px;
+        }
     }
 
-    a {
-      font-size: 10px;
+    form {
+        width: 100%;
     }
-  }
 
-  form {
-    width: 100%;
-  }
-
-  label {
-    /* display: flex;
+    label {
+        /* display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center; */
-    margin-top: 25px;
-    width: 100%;
-    display: inline-block;
-    height: 54px;
+        margin-top: 25px;
+        width: 100%;
+        display: inline-block;
+        height: 54px;
 
-    span {
-      /* width: 115px;
+        span {
+            /* width: 115px;
       margin-right: 20px; */
-      font-size: 12px;
-      color: darkgray;
+            font-size: 12px;
+            color: darkgray;
+        }
+
+        input {
+            border-top: none;
+            border-right: none;
+            border-left: none;
+        }
     }
 
-    input {
-      border-top: none;
-      border-right: none;
-      border-left: none;
+    .bus-button {
+        margin-left: auto;
+        margin-top: 25px;
     }
-  }
-
-  .bus-button {
-    margin-left: auto;
-    margin-top: 25px;
-  }
 `;
 
-const Login = (props) => {
+const Login = ({
+  auth, history, errors, loginUser,
+}) => {
   const [login, setLogin] = useState({
     email: '',
     password: '',
@@ -81,13 +83,14 @@ const Login = (props) => {
   });
 
   useEffect(() => {
-    if (props.auth.isAuthenticated) {
-      this.props.history.push('/home'); // push user to home when they login
+    // If logged in user naviages here, redirect
+    if (auth.isAuthenticated) {
+      history.push('/dashboard');
     }
 
-    if (props.errors) {
+    if (errors) {
       const moddedState = _.clone(login);
-      moddedState.errors = props.errors;
+      moddedState.errors = errors;
       setLogin(moddedState);
     }
   });
@@ -107,7 +110,7 @@ const Login = (props) => {
       password: login.password,
     };
 
-    props.loginUser(user); // since we handle the redirect within our component, we don't need to pass in props.history as a paramter
+    loginUser(user); // since we handle the redirect within our component, we don't need to pass in props.history as a paramter
 
     console.log(user);
   };
@@ -120,7 +123,7 @@ const Login = (props) => {
 
   return (
     <StyledShadowedBox>
-      <StyledSignup>
+      <StyledLogin>
         <form noValidate onSubmit={onSubmit}>
           <div className="title-row">
             <div className="title">Login</div>
@@ -156,10 +159,10 @@ const Login = (props) => {
           </label>
 
           <div className="bus-button">
-            <BUSButton className="bus-button" />
+            <BUSButton className="bus-button" title="Login" clickAction={onSubmit} />
           </div>
         </form>
-      </StyledSignup>
+      </StyledLogin>
     </StyledShadowedBox>
   );
 };

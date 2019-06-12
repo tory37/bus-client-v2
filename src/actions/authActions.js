@@ -1,8 +1,16 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import React from 'react';
 import setAuthToken from '../utils/setAuthToken';
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './types';
+import {
+  displaySuccessNotification,
+  displayErrorNotification,
+  displayLoadingNotification,
+} from '../utils/notifications';
+import { getErrorPayload } from '../utils/apiErrors';
+import ApiToastError from '../components/ApiToastError';
 
 // Set logged in user
 export const setCurrentUser = decoded => ({
@@ -17,17 +25,29 @@ export const settUserLoading = () => ({
 
 // Register User
 export const registerUser = (userData, history) => (dispatch) => {
+  const notificationId = displayLoadingNotification('Signing up...');
+  console.log(notificationId);
   axios
     .post('/api/users/register', userData)
-    .then(res => history.push('/login')) // re-direct to login on siccessful register
-    .catch(err => dispatch({
-      type: GET_ERRORS,
-      payload: err.response.data,
-    }));
+    .then((res) => {
+      displaySuccessNotification('You signed up! Welcome!', notificationId);
+      history.push('/login');
+    }) // re-direct to login on siccessful register
+    .catch((err) => {
+      const errorPayload = getErrorPayload(err);
+      displayErrorNotification(
+        <ApiToastError apiErrorPayload={errorPayload} />,
+        notificationId,
+      );
+      dispatch({
+        type: GET_ERRORS,
+        payload: errorPayload,
+      });
+    });
 };
 
 // Login - get user token
-export const loginUser = userData => (dispatch) => {
+export const loginUser = userData => (dispatch, history) => {
   axios
     .post('/api/users/login', userData)
     .then((res) => {

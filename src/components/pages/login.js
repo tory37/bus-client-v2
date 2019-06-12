@@ -5,17 +5,17 @@ import Layout from '../Layout';
 import Login from '../Login';
 
 const StyledLoginPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `;
 
-const LoginPage = () => (
+const LoginPage = ({ history }) => (
   <Layout>
     <StyledLoginPage>
-      <Login />
+      <Login history={history} />
     </StyledLoginPage>
   </Layout>
 );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -78,6 +78,11 @@ const Signup = (props) => {
   });
 
   useEffect(() => {
+    // If logged in user naviages here, redirect
+    if (props.auth.isAuthenticated) {
+      props.history.push('/dashboard');
+    }
+
     if (props.errors) {
       const moddedState = _.clone(signup);
       moddedState.errors = props.errors;
@@ -181,7 +186,7 @@ const Signup = (props) => {
           </label>
 
           <div className="bus-button">
-            <BUSButton className="bus-button" />
+            <BUSButton className="bus-button" title="Signup" clickAction={onSubmit}/>
           </div>
         </form>
       </StyledSignup>
@@ -191,7 +196,6 @@ const Signup = (props) => {
 
 Signup.propTypes = {
   registerUser: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -202,4 +206,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { registerUser },
-)(Signup);
+)(withRouter(Signup));

@@ -5,17 +5,17 @@ import Layout from '../Layout';
 import Signup from '../Signup';
 
 const StyledSignupPage = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 `;
 
-const SignupPage = () => (
+const SignupPage = history => (
   <Layout>
     <StyledSignupPage>
-      <Signup />
+      <Signup history={history} />
     </StyledSignupPage>
   </Layout>
 );

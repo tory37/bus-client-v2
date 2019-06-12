@@ -9,7 +9,7 @@ const Dashboard = ({ auth }) => {
     logoutUser();
   };
 
-  const user = auth;
+  const { user } = auth;
 
   return (
     <div style={{ height: '75vh' }} className="container valign-wrapper">
@@ -20,11 +20,11 @@ const Dashboard = ({ auth }) => {
             {' '}
             {user.name.split(' ')[0]}
             <p className="flow-text grey-text text-darken-1">
-              You are logged into a full-stack
+                            You are logged into a full-stack
               {' '}
               <span style={{ fontFamily: 'monospace' }}>MERN</span>
               {' '}
-              app 👏
+app 👏
             </p>
           </div>
           <button
@@ -37,7 +37,7 @@ const Dashboard = ({ auth }) => {
             onClick={onLogoutClick}
             className="btn btn-large waves-effect waves-light hoverable blue accent-3"
           >
-            Logout
+                        Logout
           </button>
         </div>
       </div>
@@ -49,9 +49,11 @@ Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = state => ({
   auth: state.auth,
 });
+
 export default connect(
   mapStateToProps,
   { logoutUser },
