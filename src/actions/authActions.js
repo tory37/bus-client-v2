@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import React from 'react';
-import setAuthToken from '../utils/setAuthToken';
+import setAuthToken from '../utils/auth';
 
 import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './types';
 import {
@@ -13,9 +13,9 @@ import { getErrorPayload } from '../utils/apiErrors';
 import ApiToastError from '../components/ApiToastError';
 
 // Set logged in user
-export const setCurrentUser = decoded => ({
+export const setCurrentUser = user => ({
   type: SET_CURRENT_USER,
-  payload: decoded,
+  payload: user,
 });
 
 // User loading
@@ -26,7 +26,6 @@ export const settUserLoading = () => ({
 // Register User
 export const registerUser = (userData, history) => (dispatch) => {
   const notificationId = displayLoadingNotification('Signing up...');
-  console.log(notificationId);
   axios
     .post('/api/users/register', userData)
     .then((res) => {
@@ -54,19 +53,26 @@ export const loginUser = userData => (dispatch, history) => {
       // Save to localStorage
 
       // Set token to localStorage
-      const { token } = res.data;
+      const { token, user } = res.data;
       localStorage.setItem('jwtToken', token);
       // Set token to Auth header
       setAuthToken(token);
       // Decode token to get user data
-      const decoded = jwtDecode(token);
+      // const decoded = jwtDecode(token);
       // Set current user
-      dispatch(setCurrentUser(decoded));
+      dispatch(setCurrentUser(user));
     })
     .catch(err => dispatch({
       type: GET_ERRORS,
       payload: err.response.data,
     }));
+};
+
+export const fetchUser = () => (dispatch, history) => {
+  axios.get('/api/users').then((res) => {
+    const user = res.data;
+    dispatch(setCurrentUser(user));
+  });
 };
 
 // Log user out

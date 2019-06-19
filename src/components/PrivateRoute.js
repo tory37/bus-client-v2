@@ -3,21 +3,13 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ component: Component, auth, ...rest }, history) => {
-  useEffect(() => {
-    // If logged in user naviages here, redirect
-    if (!auth.isAuthenticated) {
-      history.push('/login');
-    }
-  });
-  return (
-    <Route
-      {...rest}
-      render={props => (auth.isAuthenticated === true ? <Component {...props} /> : <Redirect to="/login" />)
+const PrivateRoute = ({ component: Component, auth, ...rest }, history) => (
+  <Route
+    {...rest}
+    render={props => (auth.isAuthenticated === true ? <Component {...props} /> : <Redirect to="login" />)
             }
-    />
-  );
-};
+  />
+);
 
 PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired,

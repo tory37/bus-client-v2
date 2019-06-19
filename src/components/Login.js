@@ -111,8 +111,6 @@ const Login = ({
     };
 
     loginUser(user); // since we handle the redirect within our component, we don't need to pass in props.history as a paramter
-
-    console.log(user);
   };
 
   const emailLabel = 'Email';

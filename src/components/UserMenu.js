@@ -1,26 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 
 const StyledUserMenu = styled.div`
-  font-size: 12px;
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  vertical-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    color: white;
 
-  position: absolute;
-  right: 0;
+    .image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: white;
+        padding: 5px;
+        overflow: hidden;
+        border: solid 1px black;
+        margin-right: 5px;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &:hover {
+        color: gray;
+    }
 `;
 
-const UserMenu = () => {
-  let content;
-  if (true) {
-    content = <div className="no-user">Login</div>;
-  } else {
-    content = <div className="yes-user">Tory H.</div>;
-  }
+const UserMenu = ({ user }) => {
+  useEffect(() => {
+    console.log(user);
+  });
 
-  return <StyledUserMenu>{content}</StyledUserMenu>;
+  return (
+    <StyledUserMenu>
+      <div className="image">
+        <img src={user.imageUrl} alt="user" />
+      </div>
+      <i className="fas fa-caret-down" />
+    </StyledUserMenu>
+  );
 };
 
-export default UserMenu;
+const mapStateToProps = state => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(UserMenu);
